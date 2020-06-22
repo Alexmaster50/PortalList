@@ -35,14 +35,14 @@ end
 
 --Sets up the Portal listing buttons
 function PortalList:CreatePortalIcon(point, relativeFrame, relativePoint, yOffset, SpellID, portalLocName)
-    local btn = CreateFrame("Button", "Button For: " .. portalLocName, relativeFrame, "SecureActionButtonTemplate")
-    btn:SetPoint(point, relativeFrame, relativePoint, 5, yOffset)
-    --btn:SetPoint("LEFT", "Button For: " .. GetSpellInfo(SpellID), )
+    local btn = CreateFrame("Button", "Button For: " .. portalLocName, PL_ListFrame, "SecureActionButtonTemplate")
+    btn:SetPoint(point, PL_ListFrame, relativePoint, 5, yOffset)
+    --btn:SetPoint("LEFT", "Button For: " .. GetSpellInfo(SpellID), );
     btn:SetSize(36, 36)
     btn:SetNormalTexture(GetSpellTexture(SpellID))
-
     btn:SetAttribute("type", "spell")
     btn:SetAttribute("spell", SpellID)
+
     return btn
 end
 
@@ -51,23 +51,11 @@ function PortalList:CreatePortalText(attach, portalLocName)
         PL_ListFrame:CreateFontString(
         "$parentPortal_" .. string.gsub(string.sub(portalLocName, "1", "16"), " ", "_"),
         "OVERLAY",
-        "InterUIBlack_large"   
+        "InterUIBlack_large"
     )
     Port:SetPoint("LEFT", attach, "RIGHT", 5, 0)
     Port:SetText(portalLocName)
 end
-
---
---local fntPortList = PortalList:CreateFontString("Button For: ".. PortalList:NameFixer(SpellID), PortalListFrame)
---fntPortList:SetText("mememememememmememememememem")
---fntPortList:SetPoint(point, relativeFrame, relativePoint, 35, yOffset)
---
-
---function PortalList:CreatePortalText(point, relativeFrame, relativePoint, yOffset, portalLocName)
---    local fontInst = FontInstance:SetFont("Fonts\\FRIZQT__.ttf", 14, "OUTLINE")
---    local fntPortList = PortalList:CreateFontString("Portal_Fonts", "ARTWORK", fontInst)
---    fntPortList:SetText(portalLocName)
---end
 
 --Sets up the interface
 function PortalList:CreateMenu()
@@ -88,6 +76,19 @@ function PortalList:CreateMenu()
     PortalListFrame.title:SetPoint("CENTER", PortalListFrame.TitleBg, "CENTER", 5, 0)
     PortalListFrame.title:SetText("Portal List")
 
+    --ScrollFrame
+    PortalListFrame.ScrollFrame = CreateFrame("ScrollFrame", nil, PortalListFrame, "UIPanelScrollFrameTemplate")
+    PortalListFrame.ScrollFrame:SetPoint("TOPLEFT", PortalListFrame.Bg, "TOPLEFT", 2, -2)
+    PortalListFrame.ScrollFrame:SetPoint("BOTTOMRIGHT", PortalListFrame.Bg, "BOTTOMRIGHT", 0, 2)
+
+    PortalListFrame.ScrollFrame.ScrollBar:ClearAllPoints()
+    PortalListFrame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT", PortalListFrame.ScrollFrame, "TOPRIGHT", -12, -18)
+    PortalListFrame.ScrollFrame.ScrollBar:SetPoint("BOTTOMRIGHT", PortalListFrame.ScrollFrame, "BOTTOMRIGHT", -12, 16)
+
+    local viewFrame = CreateFrame("Frame", "ViewingFrame", PortalListFrame.ScrollFrame)
+    viewFrame:SetSize(300, 540)
+    PortalListFrame.ScrollFrame:SetScrollChild(viewFrame)
+
     --Sets the window to moveable
     PortalListFrame:EnableMouse(true)
     PortalListFrame:SetMovable(true)
@@ -100,7 +101,6 @@ function PortalList:CreateMenu()
             self:StartMoving()
         end
     )
-
     PortalListFrame:SetScript(
         "OnDragStop",
         function(self)
@@ -108,10 +108,11 @@ function PortalList:CreateMenu()
         end
     )
 
+    -- NOTE: Saving Reskinning for a later build.
     --Sets the window's background to Black
-    PortalListFrame.background = PortalListFrame:CreateTexture(nil, "BACKGROUND")
-    PortalListFrame.background:SetAllPoints(PortalListFrame)
-    PortalListFrame.background:SetColorTexture(0, 0, 0, 1)
+    --PortalListFrame.background = PortalListFrame:CreateTexture(nil, "BACKGROUND")
+    --PortalListFrame.background:SetAllPoints(PortalListFrame)
+    --PortalListFrame.background:SetColorTexture(0, 0, 0, 1)
 
     local portarray = PL_Core:fetchArrayPortals()
 
@@ -119,10 +120,13 @@ function PortalList:CreateMenu()
 
     local portalPlacementYOfs = -25
 
+    --PortalListFrame.portal = PortalList:CreatePortalIcon("TOPLEFT", viewFrame, "TOPLEFT", portalPlacementYOfs, portarray[1][1], portarray[1][3]);
+    --PortalListFrame.text = PortalList:CreatePortalText(PortalListFrame.portal, portarray[1][3]);
+
     --Runs through all 23 portals, starts displaying the relevant ones to the player's faction
     for i = 1, 23 do
         if (portarray[i][6] == playerFaction or portarray[i][6] == "Both") then
-            print("testing - " .. i)
+            --print("testing - " .. i)
 
             PortalListFrame.portal =
                 PortalList:CreatePortalIcon(
