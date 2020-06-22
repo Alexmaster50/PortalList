@@ -47,7 +47,7 @@ function PortalList:CreatePortalIcon(point, relativeFrame, relativePoint, yOffse
 end
 
 function PortalList:CreatePortalText(attach, portalLocName)
-    local Port = PL_ListFrame:CreateFontString("$parentPort1", "OVERLAY", "InterUIBlack_large")
+    local Port = PL_ListFrame:CreateFontString("$parentPortal_"..string.gsub(string.sub(portalLocName, "1", "16"), " ", "_"), "OVERLAY", "InterUIBlack_large")
     Port:SetPoint("LEFT", attach, "RIGHT", 5, 0)
     Port:SetText(portalLocName)
 end
