@@ -47,7 +47,12 @@ function PortalList:CreatePortalIcon(point, relativeFrame, relativePoint, yOffse
 end
 
 function PortalList:CreatePortalText(attach, portalLocName)
-    local Port = PL_ListFrame:CreateFontString("$parentPortal_"..string.gsub(string.sub(portalLocName, "1", "16"), " ", "_"), "OVERLAY", "InterUIBlack_large")
+    local Port =
+        PL_ListFrame:CreateFontString(
+        "$parentPortal_" .. string.gsub(string.sub(portalLocName, "1", "16"), " ", "_"),
+        "OVERLAY",
+        "InterUIBlack_large"   
+    )
     Port:SetPoint("LEFT", attach, "RIGHT", 5, 0)
     Port:SetText(portalLocName)
 end
@@ -112,33 +117,26 @@ function PortalList:CreateMenu()
 
     local playerFaction = UnitFactionGroup("player")
 
-    --TODO:
-    --Find out how to make this into a fucking function later, otherwise this will be so fucking line inefficient, my god:
+    local portalPlacementYOfs = -25
 
-    if (portarray[1][6] == playerFaction or portarray[1][6] == "Both") then
-        PortalListFrame.portal1 =
-            PortalList:CreatePortalIcon("TOPLEFT", PortalListFrame, "TOPLEFT", -25, portarray[1][1], portarray[1][3])
-        PortalListFrame.text1 = PortalList:CreatePortalText(PortalListFrame.portal1, portarray[1][3])
-    end
-    if (portarray[2][6] == playerFaction or portarray[2][6] == "Both") then
-        PortalListFrame.portal2 =
-            PortalList:CreatePortalIcon("TOPLEFT", PortalListFrame, "TOPLEFT", -25, portarray[2][1], portarray[2][3])
-        PortalListFrame.text2 = PortalList:CreatePortalText(PortalListFrame.portal2, portarray[2][3])
-    end
-    if (portarray[3][6] == playerFaction or portarray[3][6] == "Both") then
-        PortalListFrame.portal3 =
-            PortalList:CreatePortalIcon("TOPLEFT", PortalListFrame, "TOPLEFT", -65, portarray[3][1], portarray[3][3])
-        PortalListFrame.text3 = PortalList:CreatePortalText(PortalListFrame.portal3, portarray[3][3])
-    end
-    if (portarray[4][6] == playerFaction or portarray[4][6] == "Both") then
-        PortalListFrame.portal4 =
-            PortalList:CreatePortalIcon("TOPLEFT", PortalListFrame, "TOPLEFT", -105, portarray[4][1], portarray[4][3])
-        PortalListFrame.text3 = PortalList:CreatePortalText(PortalListFrame.portal4, portarray[4][3])
-    end
-    if (portarray[5][6] == playerFaction or portarray[5][6] == "Both") then
-        PortalListFrame.portal5 =
-            PortalList:CreatePortalIcon("TOPLEFT", PortalListFrame, "TOPLEFT", -105, portarray[5][1], portarray[5][3])
-        PortalListFrame.text5 = PortalList:CreatePortalText(PortalListFrame.portal5, portarray[5][3])
+    --Runs through all 23 portals, starts displaying the relevant ones to the player's faction
+    for i = 1, 23 do
+        if (portarray[i][6] == playerFaction or portarray[i][6] == "Both") then
+            print("testing - " .. i)
+
+            PortalListFrame.portal =
+                PortalList:CreatePortalIcon(
+                "TOPLEFT",
+                PortalListFrame,
+                "TOPLEFT",
+                portalPlacementYOfs,
+                portarray[i][1],
+                portarray[i][3]
+            )
+            PortalListFrame.text = PortalList:CreatePortalText(PortalListFrame.portal, portarray[i][3])
+
+            portalPlacementYOfs = portalPlacementYOfs - 40
+        end
     end
 
     return PortalList
