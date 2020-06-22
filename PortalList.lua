@@ -144,6 +144,5 @@ function PortalList:CreateMenu()
     return PortalList
 end
 
+--Debug: Posts when the load was sucessful
 print("PortalList: Sucessful Init Load")
-
-
