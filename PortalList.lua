@@ -48,7 +48,10 @@ end
 
 function PortalList:CreatePortalText(attach, portalLocName)
     local Port =
-    PL_ListFrame_ScrollingFrame_ViewerFrame:CreateFontString("$parentPortal_" .. string.gsub(string.sub(portalLocName, "1", "16"), " ", "_"), self.portal, "InterUIBlack_large"
+        PL_ListFrame_ScrollingFrame_ViewerFrame:CreateFontString(
+        "$parentPortal_" .. string.gsub(string.sub(portalLocName, "1", "16"), " ", "_"),
+        self.portal,
+        "InterUIBlack_large"
     )
     Port:SetPoint("LEFT", PL_ListFrame_ScrollingFrame_ViewerFrame.portal, "RIGHT", 5, 0)
     Port:SetText(portalLocName)
@@ -59,13 +62,12 @@ local function ScrollFrame_OnMouseWheel(self, delta)
     local newScrollValue = self:GetVerticalScroll() - (delta * 20)
 
     if (newScrollValue < 0) then
-        newScrollValue = 0;
-    elseif (newScrollValue > self:GetVerticalScroll()) then
-        newScrollValue = self:GetVerticalScroll()
+        newScrollValue = 0
+    elseif (newScrollValue > self:GetVerticalScrollRange()) then
+        newScrollValue = self:GetVerticalScrollRange()
     end
     self:SetVerticalScroll(newScrollValue)
 end
-
 
 --Sets up the interface
 function PortalList:CreateMenu()
@@ -87,11 +89,9 @@ function PortalList:CreateMenu()
     PortalListFrame.title:SetPoint("CENTER", PortalListFrame.TitleBg, "CENTER", 5, 0)
     PortalListFrame.title:SetText("Portal List")
 
-    
-
-
     --ScrollFrame
-    PortalListFrame.ScrollFrame = CreateFrame("ScrollFrame", "$parent_ScrollingFrame", PortalListFrame, "UIPanelScrollFrameTemplate")
+    PortalListFrame.ScrollFrame =
+        CreateFrame("ScrollFrame", "$parent_ScrollingFrame", PortalListFrame, "UIPanelScrollFrameTemplate")
     PortalListFrame.ScrollFrame:SetPoint("TOPLEFT", PortalListFrame, "TOPLEFT", 2, -20)
     PortalListFrame.ScrollFrame:SetPoint("BOTTOMRIGHT", PortalListFrame, "BOTTOMRIGHT", -2, 2)
     PortalListFrame.ScrollFrame:SetClipsChildren(true)
@@ -108,20 +108,9 @@ function PortalList:CreateMenu()
     print("script success")
     PortalListFrame.ScrollFrame:SetScrollChild(viewFrame)
 
-    
-
     PortalListFrame.ScrollFrame.ScrollBar:ClearAllPoints()
     PortalListFrame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT", PortalListFrame.ScrollFrame, "TOPRIGHT", -12, -18)
     PortalListFrame.ScrollFrame.ScrollBar:SetPoint("BOTTOMRIGHT", PortalListFrame.ScrollFrame, "BOTTOMRIGHT", -12, 16)
-
-
-    
-
-
-
-
-
-
 
     --Sets the window to moveable
     PortalListFrame:EnableMouse(true)
@@ -160,7 +149,7 @@ function PortalList:CreateMenu()
     --Runs through all 23 portals, starts displaying the relevant ones to the player's faction
     for i = 1, 23 do
         if (portarray[i][6] == playerFaction or portarray[i][6] == "Both") then
-           print("testing - " .. i)
+            --print("testing - " .. i)
             PL_ListFrame_ScrollingFrame_ViewerFrame.portal =
                 PortalList:CreatePortalIcon(
                 "TOPLEFT",
@@ -170,7 +159,8 @@ function PortalList:CreateMenu()
                 portarray[i][1],
                 portarray[i][3]
             )
-            PortalListFrame.text = PortalList:CreatePortalText(PL_ListFrame_ScrollingFrame_ViewerFrame.portal, portarray[i][3])
+            PortalListFrame.text =
+                PortalList:CreatePortalText(PL_ListFrame_ScrollingFrame_ViewerFrame.portal, portarray[i][3])
 
             portalPlacementYOfs = portalPlacementYOfs - 40
         end

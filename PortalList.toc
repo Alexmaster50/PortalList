@@ -1,5 +1,5 @@
 ## Interface: 80300
-## Version: 0.01 [InDev]
+## Version: 0.2 [Alpha]
 ## Title: |cffffc125Portal List|r
 ## Author: Alexmaster [Lexi]
 ## Notes: Provides a list of portals, showing learnt and unlearnt.
